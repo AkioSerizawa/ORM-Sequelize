@@ -57,6 +57,21 @@ class PessoaController {
       res.status(500).json(`${e.message} - Falha ao remover pessoa`);
     }
   }
+
+  static async restauraPessoa(req, res, next) {
+    const { id } = req.params;
+    try {
+      await database.Pessoas.restore({ where: { id: Number(id) } });
+      return res
+        .status(200)
+        .json({ mensagem: `O id -${id}- foi restaurado com sucesso` });
+    } catch (e) {
+      return res
+        .status(500)
+        .json(`${e.message} - Falha ao tentar restaura Pessoa`);
+    }
+  }
+
   //Matriculas
   static async pegaUmaMatricula(req, res) {
     const { estudanteId, matriculaId } = req.params;
@@ -86,7 +101,7 @@ class PessoaController {
     }
   }
 
-  static async atualizMatricula(req, res, next) {
+  static async atualizaMatricula(req, res, next) {
     const { estudanteId, matriculaId } = req.params;
     const novasInfos = req.body;
     try {
@@ -122,6 +137,25 @@ class PessoaController {
         .json({ mensagem: `O ID -${estudanteId}- foi deletado com sucesso` });
     } catch (e) {
       res.status(500).json(`${e.message} - Falha ao remover pessoa`);
+    }
+  }
+
+  static async restauraMatricula(req, res, next) {
+    const { estudanteId, matriculaId } = req.params;
+    try {
+      await database.Matricula.restore({
+        where: {
+          id: Number(matriculaId),
+          estudante_id: Number(estudanteId),
+        },
+      });
+      return res
+        .status(200)
+        .json({ mensagem: `O id -${id}- foi restaurado com sucesso` });
+    } catch (e) {
+      return res
+        .status(500)
+        .json(`${e.message} - Falha ao tentar restaurar Matricula`);
     }
   }
 }

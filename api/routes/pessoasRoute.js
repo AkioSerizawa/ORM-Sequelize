@@ -6,6 +6,7 @@ const router = Router();
 router.get("/pessoas", PessoaController.pegaTodasAsPessoas);
 router.get("/pessoas/:id", PessoaController.pegaUmaPessoa);
 router.post("/pessoas", PessoaController.criaPessoa);
+router.post("/pessoas/:id/restaura", PessoaController.restauraPessoa);
 router.put("/pessoas/:id", PessoaController.atualizaPessoa);
 router.delete("/pessoas/:id", PessoaController.apagaPessoa);
 
@@ -15,9 +16,10 @@ router.get(
   PessoaController.pegaUmaMatricula
 );
 router.post("/pessoas/:estudanteId/matricula/", PessoaController.criaMatricula);
+router.post("/pessoas/:estudanteId/matricula/restaura", PessoaController.restauraMatricula);
 router.put(
   "/pessoas/:estudanteId/matricula/:matriculaId",
-  PessoaController.atualizMatricula
+  PessoaController.atualizaMatricula
 );
 router.delete(
   "/pessoas/:estudanteId/matricula/:matriculaId",
