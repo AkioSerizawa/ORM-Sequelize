@@ -171,13 +171,30 @@ class PessoaController {
   static async pegaMatriculas(req, res, next) {
     const { estudanteId } = req.params;
     try {
-      const pessoa = await database.Pessoas.findOne({
+      const pessoa = await database.Matriculas.findOne({
         where: { id: Number(estudanteId) },
       });
       const matriculas = await pessoa.getAulasMatriculadas();
       res.status(200).json(matriculas);
     } catch (e) {
-      res.status(500).json(`${e.message} - Falha ao remover pessoa`);
+      res.status(500).json(`${e.message} - Falha ao pegar Matricula`);
+    }
+  }
+
+  static async pegaMatriculasPorTurma(req, res, next) {
+    const { turmaId } = req.params;
+    try {
+      const todasAsMatriculas = await database.Matriculas.findAndCountAll({
+        where: {
+          turma_id: Number(turmaId),
+          status: "confirmado",
+        },
+      });
+      return res.status(200).json(todasAsMatriculas);
+    } catch (e) {
+      res
+        .status(500)
+        .json(`${e.message} - Falha ao pegar Matricula com a Turma`);
     }
   }
 }
