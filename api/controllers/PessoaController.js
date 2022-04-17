@@ -135,7 +135,7 @@ class PessoaController {
   static async apagaMatricula(req, res, next) {
     const { estudanteId, matriculaId } = req.params;
     try {
-      await database.Pessoas.destroy({
+      await database.Matriculas.destroy({
         where: {
           id: Number(matriculaId),
           estudante_id: Number(estudanteId),
@@ -152,7 +152,7 @@ class PessoaController {
   static async restauraMatricula(req, res, next) {
     const { estudanteId, matriculaId } = req.params;
     try {
-      await database.Matricula.restore({
+      await database.Matriculas.restore({
         where: {
           id: Number(matriculaId),
           estudante_id: Number(estudanteId),
@@ -165,6 +165,19 @@ class PessoaController {
       return res
         .status(500)
         .json(`${e.message} - Falha ao tentar restaurar Matricula`);
+    }
+  }
+
+  static async pegaMatriculas(req, res, next) {
+    const { estudanteId } = req.params;
+    try {
+      const pessoa = await database.Pessoas.findOne({
+        where: { id: Number(estudanteId) },
+      });
+      const matriculas = await pessoa.getAulasMatriculadas();
+      res.status(200).json(matriculas);
+    } catch (e) {
+      res.status(500).json(`${e.message} - Falha ao remover pessoa`);
     }
   }
 }
